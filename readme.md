@@ -27,7 +27,7 @@ Cria uma nova página React dentro do diretório `src/pages/` e automaticamente 
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/SEU_USUARIO/sunno-cli.git
+git clone https://github.com/RaianRodrigues/sunno.git
 ```
 
 ### 2. Instale globalmente
