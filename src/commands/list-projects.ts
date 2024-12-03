@@ -1,30 +1,39 @@
-import { GluegunCommand, GluegunFilesystem, GluegunPrompt, GluegunParameters, GluegunPrint } from "gluegun";
-import * as path from "path";
-import * as fs from "fs";
-import * as os from "os";
+import {
+  GluegunCommand,
+  GluegunFilesystem,
+  GluegunPrompt,
+  GluegunParameters,
+  GluegunPrint,
+} from "gluegun";
 import * as child_process from "child_process";
 import { CLIConfig } from "../types/config";
 
-const CONFIG_DIR = path.join(os.homedir(), ".sunno");
-const CONFIG_FILE = path.join(CONFIG_DIR, "config.json");
-
-const ensureConfigDir = () => {
-  if (!fs.existsSync(CONFIG_DIR)) {
-    fs.mkdirSync(CONFIG_DIR, { recursive: true });
+const ensureConfigDir = (filesystem: GluegunFilesystem) => {
+  const configDir = filesystem.path(filesystem.homedir(), ".sunno");
+  if (!filesystem.exists(configDir)) {
+    filesystem.dir(configDir);
   }
+  return configDir;
 };
 
-const loadConfig = () => {
-  ensureConfigDir();
-  if (fs.existsSync(CONFIG_FILE)) {
-    return JSON.parse(fs.readFileSync(CONFIG_FILE, "utf-8")) as CLIConfig;
+const loadConfig = (filesystem: GluegunFilesystem): CLIConfig | null => {
+  const configDir = ensureConfigDir(filesystem);
+  const configFile = filesystem.path(configDir, "config.json");
+
+  if (filesystem.exists(configFile)) {
+    const content = filesystem.read(configFile, "utf8");
+    return content ? (JSON.parse(content) as CLIConfig) : null;
   }
   return null;
 };
 
-const saveConfig = (config: CLIConfig): void => {
-  ensureConfigDir();
-  fs.writeFileSync(CONFIG_FILE, JSON.stringify(config, null, 2));
+const saveConfig = (
+  filesystem: GluegunFilesystem,
+  config: CLIConfig
+): void => {
+  const configDir = ensureConfigDir(filesystem);
+  const configFile = filesystem.path(configDir, "config.json");
+  filesystem.write(configFile, JSON.stringify(config, null, 2));
 };
 
 const requestConfig = async (
@@ -67,8 +76,7 @@ const requestConfig = async (
 
 const command: GluegunCommand = {
   name: "list-projects",
-  description:
-    "Lista os projetos e permite abrir na IDE que o usuário escolher",
+  description: "Lista os projetos e permite abrir na IDE que o usuário escolher",
   run: async ({
     filesystem,
     prompt,
@@ -81,17 +89,16 @@ const command: GluegunCommand = {
     parameters: GluegunParameters;
   }) => {
     try {
-      let config = loadConfig();
-
+      let config = loadConfig(filesystem);
       config = await requestConfig(prompt, config, filesystem, parameters.options);
-      saveConfig(config);
+      saveConfig(filesystem, config);
 
       const projectsPath = config.projectsPath!;
       const projects = filesystem
         .list(projectsPath)
-        .filter((file) => filesystem.isDirectory(`${projectsPath}/${file}`));
+        ?.filter((file) => filesystem.isDirectory(filesystem.path(projectsPath, file)));
 
-      if (projects.length === 0) {
+      if (!projects || projects.length === 0) {
         print.warning("Nenhum projeto encontrado na pasta especificada.");
         return;
       }
@@ -103,14 +110,14 @@ const command: GluegunCommand = {
         choices: projects,
       });
 
-      const projectPath = `${projectsPath}/${project}`;
+      const projectPath = filesystem.path(projectsPath, project);
       child_process.execSync(config.ideCommand!, {
         cwd: projectPath,
         stdio: "inherit",
       });
       print.success(`Abrindo o projeto ${project}.`);
     } catch (error) {
-      print.error((error as Error).message);
+      print.error(`Erro: ${(error as Error).message}`);
     }
   },
 };
