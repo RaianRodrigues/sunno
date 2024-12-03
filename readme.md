@@ -33,6 +33,7 @@ git clone https://github.com/RaianRodrigues/sunno.git
 ### 2. Instale globalmente
 
 ```bash
+cd sunno
 npm install -g .
 ```
 
