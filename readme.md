@@ -23,18 +23,10 @@ Comando: `create-page <nome-da-página>`
 Cria uma nova página React dentro do diretório `src/pages/` e automaticamente adiciona a exportação dessa página ao arquivo `index.ts` para facilitar o uso.
 
 <h2 align="center"> ⚙️ Instalação </h2>
-
-### 1. Clone o repositório
-
-```bash
-git clone https://github.com/RaianRodrigues/sunno.git
-```
-
-### 2. Instale globalmente
+Para instalar a cli executo o seguinte comando:
 
 ```bash
-cd sunno
-npm link
+npm install -g sunno
 ```
 
 <h2 align="center"> 🖥️ Exemplos de Uso </h2>
