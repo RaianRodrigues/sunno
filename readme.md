@@ -1,3 +1,5 @@
+<h3 align="right"> <a href="https://github.com/RaianRodrigues/sunno/blob/main/docs/en-US.md">English</a>
+  
 <h1 align="center"> Sunno CLI </h1>
 
 **Sunno CLI** é uma ferramenta de linha de comando desenvolvida para otimizar e agilizar o desenvolvimento de aplicações React.js. Ela oferece funcionalidades práticas, como listar projetos de uma pasta e criar componentes e páginas de maneira automatizada, economizando tempo e esforço durante o desenvolvimento.
