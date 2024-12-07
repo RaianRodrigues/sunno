@@ -10,7 +10,7 @@ module.exports = (toolbox: Toolbox) => {
     async function Aux({ folder, name }: AuxProps) {
 
         if (!name) {
-            error("O nome do componente é obrigatório!");
+            error("The component name is required!");
             return;
         }
 
@@ -21,7 +21,7 @@ module.exports = (toolbox: Toolbox) => {
 
             await generate({
                 template: "template.tsx.ejs",
-                target: filesystem.path(folder, formattedName, 'index.tsx'),
+                target: `${folder}/${formattedName}/index.tsx`,
                 props: { name: formattedName },
             });
 
@@ -31,9 +31,9 @@ module.exports = (toolbox: Toolbox) => {
                 fs: filesystem
             });
 
-            success(`Componente ${formattedName} criado com sucesso!`);
+            success(`Component ${formattedName} created successfully!`);
         } catch (err) {
-            error(`Erro ao criar o componente: ${(err as Error).message}`);
+            error(`Error creating component: ${(err as Error).message}`);
         }
     }
     toolbox.Aux = Aux;

@@ -1,15 +1,20 @@
 {
   "name": "sunno",
-  "version": "0.0.1",
-  "description": "sunno CLI",
+  "version": "0.0.3",
+  "description": "Sunno CLI: A command-line tool designed to streamline the development process. It allows users to list projects from a specified folder and create components and pages based on predefined templates.",
   "types": "build/types/types.d.ts",
   "bin": {
     "sunno": "bin/sunno"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RaianRodrigues/sunno"
+  },
+  "keywords": ["react","typescript","sunno"],
   "scripts": {
     "clean-build": "rimraf -rf ./build",
     "compile": "tsc -p .",
-    "copy-templates": "copyfiles ./src/templates/* ./build/templates",
+    "copy-templates": "copyfiles -u 1 ./src/templates/* ./build/",
     "build": "yarn clean-build && yarn compile && yarn copy-templates",
     "prepublishOnly": "yarn build",
     "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write",

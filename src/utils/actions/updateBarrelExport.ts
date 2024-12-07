@@ -32,7 +32,7 @@ export const updateBarrelExport = ({
             const barrelContent = fs.read(barrelPath, "utf8");
             const updatedContent = barrelContent
                 .split("\n")
-                .filter((line) => line.trim() !== exportLine) // Remove a linha específica
+                .filter((line) => line.trim() !== exportLine)
                 .join("\n");
 
             fs.write(barrelPath, updatedContent);
