@@ -4,13 +4,13 @@ export async function isReact(filesystem: GluegunFilesystem) {
     const packagePath = filesystem.path('package.json');
 
     if (!filesystem.exists(packagePath)) {
-        throw new Error("Erro: O arquivo package.json não foi encontrado neste diretório.");
+        throw new Error("Error: The package.json file was not found in this directory.");
     }
 
     const packageJson = filesystem.read(packagePath, 'json');
 
     if (!packageJson || !packageJson.dependencies.react) {
-        throw new Error("Erro: O React não está listado como dependência no package.json.");
+        throw new Error("Error: React is not listed as a dependency in package.json.");
     }
 
     return true;

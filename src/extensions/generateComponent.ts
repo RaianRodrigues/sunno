@@ -1,5 +1,5 @@
 import { Toolbox } from "gluegun/build/types/domain/toolbox";
-import { AuxProps } from "../types/config";
+import { generateComponentProps } from "../types/config";
 import { updateBarrelExport } from "../utils/actions/updateBarrelExport";
 import { isReact } from "../utils/isReact";
 
@@ -7,7 +7,7 @@ module.exports = (toolbox: Toolbox) => {
 
     const { filesystem, template: { generate }, print: { success, error } } = toolbox;
 
-    async function Aux({ folder, name }: AuxProps) {
+    async function generateComponent({ folder, name }: generateComponentProps) {
 
         if (!name) {
             error("The component name is required!");
@@ -36,5 +36,5 @@ module.exports = (toolbox: Toolbox) => {
             error(`Error creating component: ${(err as Error).message}`);
         }
     }
-    toolbox.Aux = Aux;
+    toolbox.generateComponent = generateComponent;
 };

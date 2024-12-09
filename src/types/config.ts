@@ -5,7 +5,7 @@ export interface CLIConfig {
   ideCommand?: string;
 }
 
-export interface AuxProps {
+export interface generateComponentProps {
   folder: string;
   name: string
 }
